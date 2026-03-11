@@ -23,8 +23,8 @@
   --text: #000000;
   --red: #e53935;
 
-  --max-width: 1200px;
-  --header-top-pad: 46px;
+  --max-width: 1600px;
+  --header-top-pad: 80px;
   --side-pad: 44px;
 }
 
@@ -61,7 +61,7 @@ body {
   text-align: center;
   font-family: "ZaiKinematografi", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: 54px;
-  letter-spacing: 8px;
+  letter-spacing: 3px;
   line-height: 1;
   margin: 0;
   user-select: none;
@@ -70,7 +70,7 @@ body {
 /* Red dot button */
 .menu-btn {
   position: absolute;
-  top: 44px;
+  top: var(--header-top-pad);
   right: var(--side-pad);
   width: 46px;
   height: 46px;
@@ -91,19 +91,22 @@ body {
 
 /* The "white bar" appears in OPEN state to match screenshot */
 .menu-btn .bar {
-  width: 22px;
+  width: 50px;
   height: 10px;
-  background: #fff;
+  background: var(--bg);
   opacity: 0;
   border-radius: 0;
-  transition: opacity 200ms ease;
-  margin-left: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: opacity 280ms ease, transform 280ms ease;
+  margin-left: -92px;
 }
 
 .menu-btn.is-open .bar {
   opacity: 1;
-  width: 50px;
-  margin-left: -92px;
+  transform: scaleX(1);
+  transition-duration: 180ms;
+  transition-delay: 120ms;
 }
 
 /* --------------------
@@ -112,7 +115,7 @@ body {
 .main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 36px var(--side-pad) 64px;
+  padding: 100px var(--side-pad) 64px;
 }
 
 /* --------------------
@@ -121,9 +124,9 @@ body {
 .work-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 44px;
+  gap: 28px;
   align-items: start;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .work-grid figure {
@@ -230,11 +233,19 @@ body {
 /* Keep header/menu above video */
 .reel-page .site-header {
   position: relative;
-  z-index: 2;
+  z-index: 60;
 }
 
 .reel-page .brand {
   color: #000; /* your screenshot is black over a light video frame */
+}
+
+.reel-page .menu-btn .bar {
+  background: transparent;
+}
+
+.reel-page .menu-btn.is-open .bar {
+  background: var(--bg);
 }
 
 /* --------------------
@@ -248,26 +259,37 @@ body {
 
   /* fade-in */
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 400ms ease;
+  transition: opacity 400ms ease, visibility 0s linear 400ms;
 }
 
 .menu-overlay.is-open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transition: opacity 400ms ease;
 }
 
 .menu-inner {
   height: 100%;
-  padding: 140px var(--side-pad) 60px;
+  padding: 0 var(--side-pad) 0 calc(var(--side-pad) + 40px);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
 }
 
 .menu-links {
   display: grid;
   gap: 10px;
+  transition: opacity 220ms ease, transform 220ms ease;
+  will-change: opacity, transform;
+}
+
+.menu-overlay.is-navigating .menu-links {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 .menu-links a {
